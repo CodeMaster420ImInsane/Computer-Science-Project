@@ -5,14 +5,14 @@ namespace CSProject
 {
     class Program
     {
-        Dictionary<int, List<double>> SMA = new Dictionary<int, List<double>>();
-        public class Data
+        Dictionary<int, List<double>> SMA = new Dictionary<int, List<double>>(); //Creating a list to calculate the Simple Moving Averages
+        public class Data //Creating variables to add as headings on a table
         {
             String dateTime;
             double closeAvg, lowAvg, highAvg, openAvg;
             Boolean buySuccess, sellSuccess;
             List<double> SMAAvgs = new List<double>();
-            public Data(String dateTime, double closeAvg, double lowAvg, double highAvg, double openAvg)
+            public Data(String dateTime, double closeAvg, double lowAvg, double highAvg, double openAvg) //Constructor for all the variables in Data
             {
                 this.dateTime = dateTime;
                 this.closeAvg = closeAvg;
@@ -32,7 +32,7 @@ namespace CSProject
             {
                 this.sellSuccess = sellSuccess;
             }
-            public string printLine()
+            public string printLine() // Prints every line of data after calculations of SMAs are made
             {
                 return dateTime + "\t" + closeAvg + "\t" + lowAvg + "\t" + highAvg + "\t" + openAvg + String.Join("\t", SMAAvgs);
             }
@@ -41,11 +41,11 @@ namespace CSProject
 
         public static void Main(String[] args)
         {
-            new Program(new int[] { 5, 50, 100 }, 0.8f);
+            new Program(new int[] { 5, 50, 100 }, 0.8f); //Creating an SMA with period 5, 50, and 100
         }
         private double addAvg(double closeAvg, int numPeriods)
         {
-            List<double> SMAavg = SMA[numPeriods];
+            List<double> SMAavg = SMA[numPeriods]; //Makes a list which produces 3 lines
             SMAavg.Add(closeAvg);
             if (SMAavg.Count > numPeriods)
             {
@@ -83,7 +83,7 @@ namespace CSProject
 
 
                 int frame = (int)(noOfLines * testFraction);
-                foreach (String run in new String[] { "Train", "Test" })
+                foreach (String run in new String[] { "Train", "Test" }) //Using ternary operators to split data 80-20
                 {
                     int minLineCount = run.Equals("Train") ? 1 : frame; //start at second line: ignore headers
                     int maxLineCount = run.Equals("Train") ? frame : noOfLines;
@@ -99,10 +99,10 @@ namespace CSProject
                         line = sr.ReadLine();
                         if (line != null && lineCount >= minLineCount && lineCount < maxLineCount)
                         {
-                            string[] results = line.Split("\t");
+                            string[] results = line.Split("\t"); //Makes a string array of every category (split by a tab)
                             string hour = results[0].Substring(11, 2);
                             prevHour = prevHour == null ? hour : prevHour; // setting the first line only to current hour
-                            double closeAvg = (double.Parse(results[results.Length - 2]) + double.Parse(results[results.Length - 1])) / 2;
+                            double closeAvg = (double.Parse(results[results.Length - 2]) + double.Parse(results[results.Length - 1])) / 2; //These 4 lines are just taking the averages of 2 categories each
                             double lowAvg = (double.Parse(results[results.Length - 4]) + double.Parse(results[results.Length - 3])) / 2;
                             double highAvg = (double.Parse(results[results.Length - 6]) + double.Parse(results[results.Length - 5])) / 2;
                             double openAvg = (double.Parse(results[results.Length - 8]) + double.Parse(results[results.Length - 7])) / 2;
@@ -138,7 +138,7 @@ namespace CSProject
 
                     sr.Close();
                     Console.WriteLine("Line count " + writeFileLines.Count);
-                    File.WriteAllLines(run + "writeLines.txt", writeFileLines.ToArray());
+                    File.WriteAllLines(run + "writeLines.txt", writeFileLines.ToArray()); //Compiles 2 files: TrainwriteLines and TestwriteLines with the data split
                     Console.WriteLine(run + " done");
                 }
             }
@@ -148,7 +148,7 @@ namespace CSProject
             }
             finally
             {
-                Console.WriteLine("Check line");
+                Console.WriteLine("Check line"); //Final check
             }
         }
 
