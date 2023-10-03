@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import requests
 import io
 import os
@@ -13,13 +7,6 @@ from datetime import timedelta, datetime, date
 import pandas as pd
 import gzip
 
-
-# In[2]:
-
-
-# download code mostly taken from duka. Uses lzma compression and each hour
-# the time column is the number of ms from the start of the hour
-# https://github.com/giuse88/duka/blob/master/duka/core/processor.py
 def decompress_lzma(data):
     results = []
     len(data)
@@ -96,11 +83,6 @@ def get_hour_ticks(symbol, datetime, verbose=False):
                 return pd.DataFrame(tokenised_data)
             else:
                 return None
-
-
-# In[ ]:
-
-
 # test
 hour_datetime = datetime.strptime('2018-01-01T22:00:00', '%Y-%m-%dT%H:%M:%S')
 data = get_hour_ticks('EURUSD', hour_datetime)
@@ -110,12 +92,6 @@ else:
     print(hour_datetime,"row count:",len(data))
     print(data)
 
-
-# In[3]:
-
-
-# get whole year and write to gzip file
-# TODO - put in stop for 'today', i.e. current year and not asking for future info
 def download_year_ticks(symbol, year):
     # first date/time
     curr_datetime = datetime.strptime(str(year)+'-01-01T00:00:00', '%Y-%m-%dT%H:%M:%S')
@@ -135,10 +111,6 @@ def download_year_ticks(symbol, year):
                     data.to_csv(gzipfile, index=False, line_terminator='\n', header=False)
 
                 curr_datetime += timedelta(hours=1)
-        
-
-
-# In[4]:
 
 
 # run through each symbol and get 5 years tick data
@@ -156,10 +128,6 @@ for symbol in symbols:
     for year in years:
         print("Starting download for: ",symbol,"@",year)
         download_year_ticks(symbol, year)
-
-
-# In[ ]:
-
 
 f=gzip.open('tickData/EURUSD/EURUSD_2022_ticks.csv.gz,'rb')
 file_content=f.read()
