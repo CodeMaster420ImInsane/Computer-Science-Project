@@ -21,3 +21,7 @@ df = pd.read_csv('/tickData/{symbol}', names=['Symbol', 'Date_Time', 'Bid', 'Ask
 #2012-06-01 00:00:03.010000  EUR/USD  1.23620  1.23624
 #2012-06-01 00:00:03.012000  EUR/USD  1.23620  1.23625
 # Want: select time period (15 mins). When tick increased by 15 mins, the ask is the close, original bid is the open at the start of the 15 mins. do max(bid) to find high and min(bid) to find low
+
+#Alternative:
+grouped = df.groupby('Symbol')
+new =  ((grouped['Ask'].resample('15Min').ohlc())+(grouped['Bid'].resample('15Min').ohlc()))/2 #average out bid and ask
